@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
+import { apis } from "@/server/apis"
 
 interface ProductItemType {
   Id: number;
@@ -59,31 +60,32 @@ export const useProductsStore = defineStore("products", () => {
 
   // actions
   const fetchProducts = async () => {
+
     loading.value = true;
     error.value = null;
 
     try {
 
-      const response = await axios.get("https://ahuan.ir/api/foods", {
+      const response = await axios.get(apis.products, {
         params: {
           type: 'T',
           cat: 'test'
         }
       });
 
-      products.value = response.data
-      console.log('test ', products.value);
-      
+      products.value = response?.data ?? []
 
     } catch (err: unknown) {
       error.value = "Failed to fetch products";
       console.error(err);
+
     } finally {
       loading.value = false;
     }
   };
 
   const addProduct = async (product: Omit<ProductItemType, "id">) => {
+
     loading.value = true;
     error.value = null;
 
@@ -125,15 +127,24 @@ export const useProductsStore = defineStore("products", () => {
   };
 
   const deleteProduct = async (id: number) => {
+
     loading.value = true;
     error.value = null;
+
     try {
-      // Mock API call
-      await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
+
+      await axios.delete(apis.products, {
+        params: {
+          id
+        }
+      });
+
       products.value = products.value.filter((p) => p.Id !== id);
+
     } catch (err: unknown) {
       error.value = "Failed to delete product";
       console.error(err);
+      
     } finally {
       loading.value = false;
     }

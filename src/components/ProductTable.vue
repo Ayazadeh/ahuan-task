@@ -86,6 +86,9 @@ productsStore.fetchProducts();
         >
           Add Product
         </button>
+        <div>
+            count: {{ products.length }}
+        </div>
       </div>
   
       <div class="overflow-x-auto">
@@ -99,10 +102,19 @@ productsStore.fetchProducts();
                 Name {{ sortIndicator('Title') }}
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Category
+                Description
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Price
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Category
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Image
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                C_OR_R
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
@@ -112,7 +124,6 @@ productsStore.fetchProducts();
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-if="loading">
                 <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                    {{ loading }}
                     <div class="flex justify-center items-center">
                         <svg class="animate-spin h-5 w-5 mr-3 text-indigo-600" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
@@ -124,15 +135,18 @@ productsStore.fetchProducts();
             </tr>
             <tr v-else-if="!productsStore.loading && products.length === 0">
                 <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                No products found
+                    No products found
                 </td>
             </tr>
             <tr v-else v-for="product in products" :key="product.Id">
               <td class="px-6 py-4 whitespace-nowrap">{{ product.Title }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ product.Category }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ product.Description }}</td>
               <td class="px-6 py-4 whitespace-nowrap">${{ product.Price?.toFixed(2) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ product.Category }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ product.Image }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ product.C_OR_R }}</td>
               <td class="px-6 py-4 whitespace-nowrap space-x-2">
-                <button
+                  <button
                   @click="openEditModal(product)"
                   class="text-indigo-600 hover:text-indigo-900"
                 >
