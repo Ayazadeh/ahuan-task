@@ -1,17 +1,24 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useProductsStore } from '../stores/products'
 import ProductForm from './ProductForm.vue'
 
+// store
 const productsStore = useProductsStore()
+
+// data
 const showModal = ref(false)
 const selectedProduct = ref(null)
 
+// computed
 const searchQuery = computed({
   get: () => productsStore.searchQuery,
   set: (value) => productsStore.setSearchQuery(value),
 })
+const loading = computed(() => productsStore.loading)
+const products = computed(() => productsStore.filteredProducts)
 
+// methods
 const filterCategory = computed({
   get: () => productsStore.filterCategory,
   set: (value) => productsStore.setFilterCategory(value),
@@ -51,6 +58,9 @@ const sortIndicator = (field) => {
   }
   return ''
 }
+
+// execution
+productsStore.fetchProducts();
 </script>
 <template>
     <div class="space-y-4">
@@ -84,9 +94,9 @@ const sortIndicator = (field) => {
             <tr>
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                @click="sortBy('name')"
+                @click="sortBy('Title')"
               >
-                Name {{ sortIndicator('name') }}
+                Name {{ sortIndicator('Title') }}
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Category
@@ -100,10 +110,27 @@ const sortIndicator = (field) => {
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="product in productsStore.filteredProducts" :key="product.id">
-              <td class="px-6 py-4 whitespace-nowrap">{{ product.name }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ product.category }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">${{ product.price.toFixed(2) }}</td>
+            <tr v-if="loading">
+                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                    {{ loading }}
+                    <div class="flex justify-center items-center">
+                        <svg class="animate-spin h-5 w-5 mr-3 text-indigo-600" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Loading products...
+                    </div>
+                </td>
+            </tr>
+            <tr v-else-if="!productsStore.loading && products.length === 0">
+                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                No products found
+                </td>
+            </tr>
+            <tr v-else v-for="product in products" :key="product.Id">
+              <td class="px-6 py-4 whitespace-nowrap">{{ product.Title }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ product.Category }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">${{ product.Price?.toFixed(2) }}</td>
               <td class="px-6 py-4 whitespace-nowrap space-x-2">
                 <button
                   @click="openEditModal(product)"
@@ -112,7 +139,7 @@ const sortIndicator = (field) => {
                   Edit
                 </button>
                 <button
-                  @click="deleteProduct(product.id)"
+                  @click="deleteProduct(product.Id)"
                   class="text-red-600 hover:text-red-900"
                 >
                   Delete
