@@ -26,7 +26,6 @@ const filterCategory = computed({
 });
 
 const openAddModal = () => {
-  // selectedProduct.value = { name: '', category: '', price: 0 }
   showModal.value = true;
 };
 
@@ -164,7 +163,15 @@ productsStore.fetchProducts();
             <td class="px-6 py-4 whitespace-nowrap">{{ product.Description }}</td>
             <td class="px-6 py-4 whitespace-nowrap">${{ product.Price?.toFixed(2) }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ product.Category }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ product.Image }}</td>
+            <td class="px-6 py-4 whitespace-nowrap truncate">
+              <img 
+                v-if="product.Image" 
+                :src="product.Image" 
+                :alt="product.Image"
+                class="object-cover rounded"
+              />
+              <span v-else class="text-gray-400">No image</span>
+            </td>
             <td class="px-6 py-4 whitespace-nowrap">{{ product.C_OR_R }}</td>
             <td class="px-6 py-4 whitespace-nowrap space-x-2">
               <button @click="openEditModal(product)" class="text-indigo-600 hover:text-indigo-900">
