@@ -81,22 +81,21 @@ export const useProductsStore = defineStore("products", () => {
 
     try {
 
-      await axios.post(
-        "https://jsonplaceholder.typicode.com/posts",
-        product
-      );
+      await axios.post(apis.products, product);
+
       products.value.push({  ...product });
 
     } catch (err: unknown) {
       error.value = "Failed to add product";
       console.error(err);
+      
     } finally {
       loading.value = false;
     }
   };
 
   const updateProduct = async (updatedProduct: ProductItemType) => {
-    
+
     loading.value = true;
     error.value = null;
 

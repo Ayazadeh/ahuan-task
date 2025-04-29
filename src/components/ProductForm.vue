@@ -14,24 +14,24 @@ const localProduct = ref<ProductItemType>({
   Id: 0,
   Title: '',
   Description: '',
-  Category: '',
+  Category: 'test',
   Price: null,
   Image: '',
-  C_OR_R: ''
+  C_OR_R: 'T'
 })
 
 watch(() => props.product, (newProduct) => {
   if (newProduct) {
-    localProduct.value = { ...newProduct }
+    localProduct.value = { ...newProduct, Category: 'test', C_OR_R: 'T' }
   } else {
     localProduct.value = {
       Id: 0,
       Title: '',
       Description: '',
-      Category: '',
+      Category: 'test',
       Price: null,
       Image: '',
-      C_OR_R: ''
+      C_OR_R: 'T'
     }
   }
 }, { immediate: true })
@@ -55,15 +55,6 @@ const saveProduct = () => {
             <label class="block text-sm font-medium text-gray-700">Name</label>
             <input
               v-model="localProduct.Title"
-              type="text"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              required
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Category</label>
-            <input
-              v-model="localProduct.Category"
               type="text"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               required
