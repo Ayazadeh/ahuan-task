@@ -2,13 +2,14 @@
 import { ref, computed } from 'vue'
 import { useProductsStore } from '../stores/products'
 import ProductForm from './ProductForm.vue'
+import { type ProductItemType } from '@/types/products'
 
 // store
 const productsStore = useProductsStore()
 
 // data
 const showModal = ref(false)
-const selectedProduct = ref(null)
+const selectedProduct = ref<ProductItemType | null>(null)
 
 // computed
 const searchQuery = computed({
@@ -25,11 +26,11 @@ const filterCategory = computed({
 })
 
 const openAddModal = () => {
-  selectedProduct.value = { name: '', category: '', price: 0 }
+  // selectedProduct.value = { name: '', category: '', price: 0 }
   showModal.value = true
 }
 
-const openEditModal = (product) => {
+const openEditModal = (product: ProductItemType) => {
   selectedProduct.value = { ...product }
   showModal.value = true
 }
@@ -39,11 +40,11 @@ const closeModal = () => {
   selectedProduct.value = null
 }
 
-const deleteProduct = (id) => {
+const deleteProduct = (id: number) => {
   productsStore.deleteProduct(id)
 }
 
-const sortBy = (field) => {
+const sortBy = (field: string) => {
   if (productsStore.sortBy === field) {
     productsStore.toggleSortOrder()
   } else {
@@ -52,7 +53,7 @@ const sortBy = (field) => {
   }
 }
 
-const sortIndicator = (field) => {
+const sortIndicator = (field: string) => {
   if (productsStore.sortBy === field) {
     return productsStore.sortOrder === 'asc' ? '↑' : '↓'
   }

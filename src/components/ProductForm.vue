@@ -1,21 +1,43 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useProductsStore } from '../stores/products'
+import { type ProductItemType } from '@/types/products'
 
-const props = defineProps({
-  product: Object,
-})
+const props = defineProps<{
+  product: ProductItemType | null
+}>()
+
 const emit = defineEmits(['close', 'save'])
 
 const productsStore = useProductsStore()
-const localProduct = ref({ ...props.product } || { name: '', category: '', price: 0 })
-
-watch(() => props.product, (newProduct) => {
-  localProduct.value = { ...newProduct }
+const localProduct = ref<ProductItemType>({
+  Id: 0,
+  Title: '',
+  Description: '',
+  Category: '',
+  Price: null,
+  Image: '',
+  C_OR_R: ''
 })
 
+watch(() => props.product, (newProduct) => {
+  if (newProduct) {
+    localProduct.value = { ...newProduct }
+  } else {
+    localProduct.value = {
+      Id: 0,
+      Title: '',
+      Description: '',
+      Category: '',
+      Price: null,
+      Image: '',
+      C_OR_R: ''
+    }
+  }
+}, { immediate: true })
+
 const saveProduct = () => {
-  if (localProduct.value.id) {
+  if (localProduct.value.Id) {
     productsStore.updateProduct({ ...localProduct.value })
   } else {
     productsStore.addProduct(localProduct.value)
@@ -27,12 +49,12 @@ const saveProduct = () => {
 <template>
     <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-xl font-bold mb-4">{{ product.id ? 'Edit' : 'Add' }} Product</h2>
+        <h2 class="text-xl font-bold mb-4">{{ localProduct.Id ? 'Edit' : 'Add' }} Product</h2>
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700">Name</label>
             <input
-              v-model="localProduct.name"
+              v-model="localProduct.Title"
               type="text"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               required
@@ -41,7 +63,7 @@ const saveProduct = () => {
           <div>
             <label class="block text-sm font-medium text-gray-700">Category</label>
             <input
-              v-model="localProduct.category"
+              v-model="localProduct.Category"
               type="text"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               required
@@ -50,7 +72,7 @@ const saveProduct = () => {
           <div>
             <label class="block text-sm font-medium text-gray-700">Price</label>
             <input
-              v-model.number="localProduct.price"
+              v-model.number="localProduct.Price"
               type="number"
               step="0.01"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

@@ -2,17 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
 import { apis } from "@/server/apis"
-
-interface ProductItemType {
-  Id: number;
-  Title: string;
-  Description: string;
-  Category: string;
-  Price: number | null;
-  Image: string;
-  C_OR_R: string;
-}
-
+import { type ProductItemType } from "@/types/products";
 export const useProductsStore = defineStore("products", () => {
 
   // state
@@ -106,21 +96,25 @@ export const useProductsStore = defineStore("products", () => {
   };
 
   const updateProduct = async (updatedProduct: ProductItemType) => {
+    
     loading.value = true;
     error.value = null;
+
     try {
-      // Mock API call
-      await axios.put(
-        `https://jsonplaceholder.typicode.com/posts/${updatedProduct.Id}`,
+      
+      await axios.put(`${apis.products}?id=${updatedProduct.Id}`,
         updatedProduct
       );
+
       const index = products.value.findIndex((p) => p.Id === updatedProduct.Id);
       if (index !== -1) {
         products.value[index] = updatedProduct;
       }
+
     } catch (err: unknown) {
       error.value = "Failed to update product";
       console.error(err);
+
     } finally {
       loading.value = false;
     }
