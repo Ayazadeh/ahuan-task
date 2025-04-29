@@ -83,7 +83,7 @@ export const useProductsStore = defineStore("products", () => {
 
       await axios.post(apis.products, product);
 
-      products.value.push({  ...product });
+      fetchProducts();
 
     } catch (err: unknown) {
       error.value = "Failed to add product";
@@ -119,7 +119,8 @@ export const useProductsStore = defineStore("products", () => {
     }
   };
 
-  const deleteProduct = async (id: number) => {
+  const deleteProduct = async (id?: number) => {
+    if (!id) return;
 
     loading.value = true;
     error.value = null;

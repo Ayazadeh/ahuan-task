@@ -177,7 +177,7 @@ productsStore.fetchProducts();
               <button @click="openEditModal(product)" class="text-indigo-600 hover:text-indigo-900">
                 Edit
               </button>
-              <button @click="deleteProduct(product.Id)" class="text-red-600 hover:text-red-900">
+              <button @click="deleteProduct(product.Id!)" class="text-red-600 hover:text-red-900">
                 Delete
               </button>
             </td>

@@ -16,7 +16,6 @@ const productsStore = useProductsStore();
 
 // data
 const localProduct = ref<ProductItemType>({
-  Id: 0,
   Title: "",
   Description: "",
   Category: "test",
@@ -41,7 +40,6 @@ watch(
       localProduct.value = { ...newProduct, Category: "test", C_OR_R: "T" };
     } else {
       localProduct.value = {
-        Id: 0,
         Title: "",
         Description: "",
         Category: "test",
