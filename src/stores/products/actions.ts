@@ -1,22 +1,21 @@
 import axios from "axios";
-import { apis } from "@/server/apis"
+import { apis } from "@/server/apis";
 import { type ProductItemType } from "@/types/products";
 
 import { type Ref } from "vue";
 
 interface StateType {
-    loading: Ref<boolean>;
-    error: Ref<string | null>;
-    products: Ref<ProductItemType[]>;
-    searchQuery: Ref<string>;
-    filterCategory: Ref<string>;
-    sortBy: Ref<string>;
-    sortOrder: Ref<"asc" | "desc">;
+  loading: Ref<boolean>;
+  error: Ref<string | null>;
+  products: Ref<ProductItemType[]>;
+  searchQuery: Ref<string>;
+  filterCategory: Ref<string>;
+  sortBy: Ref<string>;
+  sortOrder: Ref<"asc" | "desc">;
 }
 
 export const actions = (state: StateType) => {
-    const { loading, error, products, searchQuery, filterCategory, sortBy, sortOrder } = state;
-
+  const { loading, error, products, searchQuery, filterCategory, sortBy, sortOrder } = state;
 
   const fetchProducts = async () => {
     loading.value = true;

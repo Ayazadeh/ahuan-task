@@ -164,9 +164,9 @@ productsStore.fetchProducts();
             <td class="px-6 py-4 whitespace-nowrap">${{ product.Price?.toFixed(2) }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ product.Category }}</td>
             <td class="px-6 py-4 whitespace-nowrap truncate">
-              <img 
-                v-if="product.Image" 
-                :src="product.Image" 
+              <img
+                v-if="product.Image"
+                :src="product.Image"
                 :alt="product.Image"
                 class="object-cover rounded"
               />

@@ -1,3 +1,3 @@
 export const apis = {
-    products: 'https://ahuan.ir/api/foods'
-}
+  products: "https://ahuan.ir/api/foods",
+};
