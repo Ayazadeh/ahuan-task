@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useProductsStore } from "../stores/products";
+import { useProductsStore } from "@/stores/products";
 import ProductForm from "./ProductForm.vue";
 import { type ProductItemType } from "@/types/products";
 
